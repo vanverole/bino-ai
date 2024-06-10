@@ -8,7 +8,7 @@ async function checkIP() {
         const userIP = data.ip;
 
         if (userIP === ALLOWED_IP) {
-            document.getElementById('chat-container').style.display = 'block';
+            document.getElementById('chat-container').style.display = 'flex';
             document.getElementById('restricted-message').style.display = 'none';
         } else {
             document.getElementById('chat-container').style.display = 'none';
@@ -75,4 +75,4 @@ async function sendMessage() {
 }
 
 // Check IP on page load
-window.onload = checkIP;
+document.addEventListener('DOMContentLoaded', checkIP);
