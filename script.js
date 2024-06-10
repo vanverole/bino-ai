@@ -59,7 +59,7 @@ async function sendMessage() {
                 chatOutput.innerHTML += `<p><strong>AI:</strong> Error generating image.</p>`;
             }
         } else {
-            response = await fetch('https://api.openai.com/v1/completions', { // Use the correct path
+            response = await fetch('https://api.openai.com/v1/chat/completions', { // Use the correct path
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
