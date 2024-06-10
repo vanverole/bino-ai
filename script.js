@@ -27,7 +27,7 @@ async function sendMessage() {
         return;
     }
 
-    // Display user's message!
+    // Display user's message
     chatOutput.innerHTML += `<p><strong>You:</strong> ${chatInput}</p>`;
     chatOutput.scrollTop = chatOutput.scrollHeight;
     document.getElementById('chat-input').value = '';
