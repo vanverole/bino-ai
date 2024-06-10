@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Bot Interface</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>AI Chat Bot</h1>
+        <div class="chat-section">
+            <div id="chat-output"></div>
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+        <div class="image-section">
+            <h2>Generate Image</h2>
+            <input type="text" id="image-prompt" placeholder="Enter image description...">
+            <button onclick="generateImage()">Generate</button>
+            <div id="image-output"></div>
+        </div>
+        <div class="file-section">
+            <h2>File Upload</h2>
+            <input type="file" id="file-input">
+            <button onclick="uploadFile()">Upload</button>
+            <div id="file-output"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
