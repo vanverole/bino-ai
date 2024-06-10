@@ -1,4 +1,23 @@
-const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY_HERE';
+const OPENAI_API_KEY = 'sk-apiapi-giauo2VdVWbmkXimfhlrT3BlbkFJFypH0xYAT5WZyD7d7TqK';
+const ALLOWED_IP = '194.0.88.126';
+
+async function checkIP() {
+    try {
+        const response = await fetch('https://api64.ipify.org?format=json');
+        const data = await response.json();
+        const userIP = data.ip;
+
+        if (userIP === ALLOWED_IP) {
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('restricted-message').style.display = 'none';
+        } else {
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('restricted-message').style.display = 'block';
+        }
+    } catch (error) {
+        console.error('Error fetching IP address:', error);
+    }
+}
 
 async function sendMessage() {
     const userInput = document.getElementById('user-input').value;
@@ -66,3 +85,6 @@ function uploadFile() {
         fileOutput.innerHTML = `<p>No file selected.</p>`;
     }
 }
+
+// Check IP on page load
+window.onload = checkIP;
