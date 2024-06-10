@@ -1,0 +1,45 @@
+body {
+    background-color: #2c003e;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #ff66b2;
+    text-align: center;
+}
+
+.chat-section, .image-section, .file-section {
+    margin: 30px 0;
+}
+
+input[type="text"], input[type="file"] {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #ff66b2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ff3385;
+}
+
+#chat-output, #image-output, #file-output {
+    margin-top: 20px;
+}
