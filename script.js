@@ -36,40 +36,53 @@ async function sendMessage() {
     let isImageRequest = chatInput.toLowerCase().startsWith("generate image");
 
     let response;
-    if (isImageRequest) {
-        response = await fetch('https://api.openai.com/v1/images/generations', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
-                prompt: chatInput.slice(15).trim(), // Remove "generate image" prefix
-                n: 1,
-                size: '1024x1024'
-            })
-        });
+    try {
+        if (isImageRequest) {
+            response = await fetch('https://api.openai.com/v1/images/generations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${OPENAI_API_KEY}`
+                },
+                body: JSON.stringify({
+                    prompt: chatInput.slice(15).trim(), // Remove "generate image" prefix
+                    n: 1,
+                    size: '1024x1024'
+                })
+            });
 
-        const data = await response.json();
-        const imageUrl = data.data[0].url;
-        chatOutput.innerHTML += `<p><strong>AI:</strong> <img src="${imageUrl}" alt="Generated Image" style="max-width: 100%; border-radius: 10px;"></p>`;
-    } else {
-        response = await fetch('https://api.openai.com/v1/engines/gpt-4-turbo/completions', { // Используем GPT-4 Turbo
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
-                model: "gpt-4-turbo", // Обязательно указать модель
-                prompt: chatInput,
-                max_tokens: 1000
-            })
-        });
+            const data = await response.json();
+            if (data.data && data.data.length > 0) {
+                const imageUrl = data.data[0].url;
+                chatOutput.innerHTML += `<p><strong>AI:</strong> <img src="${imageUrl}" alt="Generated Image" style="max-width: 100%; border-radius: 10px;"></p>`;
+            } else {
+                chatOutput.innerHTML += `<p><strong>AI:</strong> Error generating image.</p>`;
+            }
+        } else {
+            response = await fetch('https://api.openai.com/v1/completions', { // Use the correct path
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${OPENAI_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-4-turbo", // Specify the model
+                    prompt: chatInput,
+                    max_tokens: 1000
+                })
+            });
 
-        const data = await response.json();
-        const reply = data.choices[0].text.trim();
-        chatOutput.innerHTML += `<p><strong>AI:</strong> ${reply}</p>`;
+            const data = await response.json();
+            if (data.choices && data.choices.length > 0) {
+                const reply = data.choices[0].text.trim();
+                chatOutput.innerHTML += `<p><strong>AI:</strong> ${reply}</p>`;
+            } else {
+                chatOutput.innerHTML += `<p><strong>AI:</strong> Error generating response.</p>`;
+            }
+        }
+    } catch (error) {
+        console.error('Error making request:', error);
+        chatOutput.innerHTML += `<p><strong>AI:</strong> Error processing your request.</p>`;
     }
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
