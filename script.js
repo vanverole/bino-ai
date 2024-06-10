@@ -54,13 +54,14 @@ async function sendMessage() {
         const imageUrl = data.data[0].url;
         chatOutput.innerHTML += `<p><strong>AI:</strong> <img src="${imageUrl}" alt="Generated Image" style="max-width: 100%; border-radius: 10px;"></p>`;
     } else {
-        response = await fetch('https://api.openai.com/v1/engines/text-davinci-004/completions', {
+        response = await fetch('https://api.openai.com/v1/engines/gpt-4-turbo/completions', { // Используем GPT-4 Turbo
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENAI_API_KEY}`
             },
             body: JSON.stringify({
+                model: "gpt-4-turbo", // Обязательно указать модель
                 prompt: chatInput,
                 max_tokens: 1000
             })
