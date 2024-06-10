@@ -1,4 +1,4 @@
-const OPENAI_API_KEY = 'sk-apiapi-giauo2VdVWbmkXimfhlrT3BlbkFJFypH0xYAT5WZyD7d7TqK';
+const OPENAI_API_KEY = 'sk-apiapi-giauo2VdVWbmkXimfhlrT3BlbkFJFypH0xYAT5WZyD7d7TqK'; // MOVE THIS TO SERVER
 const ALLOWED_IP = '194.0.88.126';
 
 async function checkIP() {
@@ -32,12 +32,9 @@ async function sendMessage() {
     chatOutput.scrollTop = chatOutput.scrollHeight;
     document.getElementById('chat-input').value = '';
 
-    // Determine type of request based on input
-    let isImageRequest = chatInput.toLowerCase().startsWith("generate image");
-
     let response;
     try {
-        if (isImageRequest) {
+        if (chatInput.toLowerCase().startsWith("generate image")) {
             response = await fetch('https://api.openai.com/v1/images/generations', {
                 method: 'POST',
                 headers: {
@@ -59,7 +56,7 @@ async function sendMessage() {
                 chatOutput.innerHTML += `<p><strong>AI:</strong> Error generating image.</p>`;
             }
         } else {
-            response = await fetch('https://api.openai.com/v1/chat/completions', { // Use the correct path
+            response = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,14 +64,14 @@ async function sendMessage() {
                 },
                 body: JSON.stringify({
                     model: "gpt-4-turbo", // Specify the model
-                    prompt: chatInput,
+                    messages: [{role: "user", content: chatInput}], // Use the correct parameter "messages"
                     max_tokens: 1000
                 })
             });
 
             const data = await response.json();
             if (data.choices && data.choices.length > 0) {
-                const reply = data.choices[0].text.trim();
+                const reply = data.choices[0].message.content.trim(); // Update to access the message content
                 chatOutput.innerHTML += `<p><strong>AI:</strong> ${reply}</p>`;
             } else {
                 chatOutput.innerHTML += `<p><strong>AI:</strong> Error generating response.</p>`;
